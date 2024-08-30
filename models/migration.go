@@ -1,7 +1,7 @@
 package models
 
 import (
-	password "go-auth-service/service"
+	password "go-auth-service/services/password"
 	"log"
 
 	"gorm.io/gorm"
