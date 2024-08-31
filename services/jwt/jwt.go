@@ -1,4 +1,4 @@
-package jwt
+package jwtService
 
 import (
 	"time" // For handling token expiration time
