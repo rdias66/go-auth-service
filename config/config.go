@@ -17,6 +17,8 @@ type Config struct {
 	DBName        string
 	AdminEmail    string
 	AdminPassword string
+	JWTSecret     string
+	ServerPort    string
 }
 
 func LoadConfig() *Config {
@@ -28,6 +30,8 @@ func LoadConfig() *Config {
 		DBName:        getEnv("DB_NAME", "authdb"),
 		AdminEmail:    getEnv("ADMIN_EMAIL", "admin@example.com"),
 		AdminPassword: getEnv("ADMIN_PASSWORD", "admin123"),
+		JWTSecret:     getEnv("JWT_SECRET", "your_jwt_secret"),
+		ServerPort:    getEnv("SERVER_PORT", "8080"),
 	}
 }
 
