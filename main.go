@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"go-auth-service/config"
+	"go-auth-service/controllers"
 	"go-auth-service/models"
+	"go-auth-service/routes"
 	auth "go-auth-service/services/auth"
 	jwtService "go-auth-service/services/jwt"
 	"log"
@@ -37,15 +38,14 @@ func main() {
 	// Set up authentication service
 	authInstance := auth.NewAuthService(jwtServiceInstance, userRepo)
 
-	if authInstance != nil {
-		fmt.Println("Success on auth instace creation")
-	}
+	// Initialize the controllers with the service
+	controllers.InitializeAuthController(authInstance)
 
 	// Set up HTTP router
 	router := mux.NewRouter()
 
 	// Add routes here
-	// e.g., router.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) { /* handler code */ })
+	routes.RegisterAuthRoutes(router)
 
 	// Start the HTTP server
 	log.Println("Auth microservice started successfully.")
