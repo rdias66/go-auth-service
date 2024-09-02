@@ -15,10 +15,13 @@ func MigrateAndSeed(db *gorm.DB, adminEmail, adminPassword string) error {
 	}
 
 	// Seed Roles
-	roles := []string{"Admin", "User"}
-	for _, roleName := range roles {
-		var role Role
-		if err := db.FirstOrCreate(&role, Role{Name: roleName}).Error; err != nil {
+	roles := []Role{
+		{Name: "Admin"},
+		{Name: "User"},
+	}
+	for _, role := range roles {
+		// Create roles if they do not exist
+		if err := db.FirstOrCreate(&role, Role{Name: role.Name}).Error; err != nil {
 			return err
 		}
 	}
@@ -38,7 +41,7 @@ func MigrateAndSeed(db *gorm.DB, adminEmail, adminPassword string) error {
 	admin := User{
 		Email:    adminEmail,
 		Password: hashedPassword,
-		Role:     adminRole,
+		RoleID:   adminRole.Id, // Use RoleID for foreign key
 	}
 
 	if err := db.FirstOrCreate(&admin, User{Email: admin.Email}).Error; err != nil {

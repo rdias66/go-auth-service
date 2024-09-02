@@ -1,5 +1,5 @@
 # Use the official Golang image
-FROM golang:1.21 AS builder
+FROM golang:1.22 AS builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -16,6 +16,9 @@ COPY . .
 # Build the Go app
 RUN go build -o main .
 
+# Debug: List the contents of the /app directory
+RUN ls -la /app
+
 # Start a new stage from scratch
 FROM alpine:latest
 
@@ -25,8 +28,10 @@ WORKDIR /root/
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main .
 
+# Debug: List the contents of the /root directory
+RUN ls -la /root
+
 # Expose port 8080 to the outside world
 EXPOSE 8080
 
-# Command to run the executable
-CMD ["./main"]
+# Command to run

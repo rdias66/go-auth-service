@@ -5,6 +5,8 @@ import (
 	jwtService "go-auth-service/services/jwt"
 	password "go-auth-service/services/password"
 
+	"fmt"
+
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -27,15 +29,16 @@ func NewAuthService(jwtService jwtService.JWTService, userRepo UserRepository) A
 }
 
 // Login validates the user credentials and returns a JWT token if successful
-func (a *authService) Login(email, entryPassword string) (string, error) {
+func (a *authService) Login(email string, entryPassword string) (string, error) {
+
 	// Find the user by email
 	user, err := a.userRepo.FindByEmail(email)
 	if err != nil {
 		return "", err
 	}
-
 	// Verify the password using the password service
 	err = password.VerifyPassword(entryPassword, user.Password)
+	fmt.Println(err)
 	if err != nil {
 		return "", errors.New("invalid credentials")
 	}
