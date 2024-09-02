@@ -7,15 +7,15 @@ import (
 	"net/http"
 )
 
-// Dependency Injection: Typically, services would be injected into the controllers for better testing and decoupling.
+// Dependency Injection
 var authService auth.AuthService
 
-// InitializeAuthController initializes the controller with the provided AuthService
+// Ininitializes the controller with the provided AuthService
 func InitializeAuthController(service auth.AuthService) {
 	authService = service
 }
 
-// Login handles user login and returns a JWT token
+// Handles user login and returns a JWT token
 func Login(w http.ResponseWriter, r *http.Request) {
 	var loginRequest struct {
 		Email    string `json:"email"`
@@ -37,7 +37,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJSON(w, http.StatusOK, map[string]string{"token": token})
 }
 
-// RefreshToken handles refreshing the JWT token
+// Handles refreshing the JWT token
 func RefreshToken(w http.ResponseWriter, r *http.Request) {
 	// Extract the token from request headers
 	token := r.Header.Get("Authorization")
@@ -56,7 +56,7 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJSON(w, http.StatusOK, map[string]string{"token": newToken})
 }
 
-// Logout handles user logout
+// Handles user logout
 func Logout(w http.ResponseWriter, r *http.Request) {
 	// Implement logout logic, such as invalidating the token or session
 	// This example assumes a stateless approach, so this may be a no-op
