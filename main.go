@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	// Load configuration from the environment or config file
+	// Load configuration from env
 	configData := config.LoadConfig()
 
 	// Connect to the database
@@ -29,22 +29,20 @@ func main() {
 		log.Fatalf("Could not migrate and seed the database: %v", err)
 	}
 
-	// Set up repositories
+	// Initialize repositories(user service)
 	userRepo := auth.NewUserRepository(db)
 
-	// Set up JWT service
+	// Initialize JWT service
 	jwtServiceInstance := jwtService.NewJWTService(configData.JWTSecret, "AuthMicroservice")
 
-	// Set up authentication service
+	// Initialize authentication service
 	authInstance := auth.NewAuthService(jwtServiceInstance, userRepo)
 
-	// Initialize the controllers with the service
+	// Initialize controllers
 	controllers.InitializeAuthController(authInstance)
 
 	// Set up HTTP router
 	router := mux.NewRouter()
-
-	// Add routes here
 	routes.RegisterAuthRoutes(router)
 
 	// Start the HTTP server
